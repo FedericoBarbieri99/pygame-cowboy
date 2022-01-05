@@ -2,6 +2,7 @@
 import sys
 from player import *
 from bullet import *
+from enemy import *
 
 pygame.init()
 
@@ -11,6 +12,7 @@ screen = pygame.display.set_mode(screen_size, vsync=1)
 background = background.convert()
 player = Player(screen)
 bullets = []
+enemies = []
 clock = pygame.time.Clock()
 
 
@@ -22,6 +24,9 @@ def update_screen():
         bullet.blit_me()
         if bullet.rect.x not in range(screen_size[0]):
             bullets.pop(bullets.index(bullet))
+
+    for enemy in enemies:
+        enemy.blit_me()
 
     pygame.display.flip()
 
@@ -36,6 +41,7 @@ def event_handler():
                 player.orientation = 'Right'
             if event.key == pygame.K_SPACE:
                 bullets.append(Bullet(screen, player))
+                enemies.append(Enemy(screen))
 
         if event.type == pygame.QUIT:
             sys.exit()
@@ -45,4 +51,3 @@ while True:
     clock.tick(60)
     event_handler()
     update_screen()
-
