@@ -5,7 +5,7 @@ from spritesheet import SpriteSheet
 
 class Enemy(pygame.sprite.Sprite):
 
-    def __init__(self, screen):
+    def __init__(self, screen, speed):
         pygame.sprite.Sprite.__init__(self)
         self.screen = screen
         self.seed = random.choice([0, 1])
@@ -16,7 +16,7 @@ class Enemy(pygame.sprite.Sprite):
         self.screen_rect = screen.get_rect()
         self.rect.x = self.screen_rect.left - self.rect.width if self.seed == 0 else self.screen_rect.right
         self.rect.bottom = self.screen_rect.bottom
-        self.vel = 10 if self.seed == 0 else -10
+        self.vel = speed if self.seed == 0 else -speed
         self.walking_animation = [SpriteSheet(walking_sheet).get_image(x, 0, 117, 96) for x in range(0, 468, 117)]
 
     def update(self):

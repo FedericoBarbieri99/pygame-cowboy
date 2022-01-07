@@ -14,9 +14,10 @@ enemy_group = pygame.sprite.Group()
 bullet_group = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 player = Player(screen)
-player_group.add(player)
-
+start_ticks = 0
+SPAWNENEMY = pygame.USEREVENT + 1
 clock = pygame.time.Clock()
+pygame.time.set_timer(SPAWNENEMY, 500)
 score = 0
 
 
@@ -55,9 +56,11 @@ def event_handler():
                 player.orientation = 'Right'
             if event.key == pygame.K_SPACE and player.alive:
                 bullet_group.add(Bullet(screen, player))
-                enemy_group.add(Enemy(screen))
             if event.key == pygame.K_r and not player.alive:
                 main()
+
+        if event.type == SPAWNENEMY:
+            spawn_enemy()
 
         if event.type == pygame.QUIT:
             sys.exit()
@@ -65,7 +68,6 @@ def event_handler():
 
 def new_game():
     global score
-    screen.fill((0, 0, 0))
     score_text = font.render(f"Last score: {score}", True, (255, 255, 255))
     respawn_text = font.render("Press R to Respawn", True, (255, 255, 255))
     respawn_rect = respawn_text.get_rect()
@@ -80,15 +82,22 @@ def new_game():
 
 
 def reset():
-    global score
+    global score, start_ticks
     enemy_group.empty()
     bullet_group.empty()
     player.alive = True
     player_group.add(player)
     score = 0
+    start_ticks = pygame.time.get_ticks()
+
+
+def spawn_enemy():
+    speed = random.uniform(0.1, (pygame.time.get_ticks() - start_ticks) / 1000)
+    enemy_group.add(Enemy(screen, speed))
 
 
 def main():
+    pass
     reset()
     while True:
         clock.tick(60)
