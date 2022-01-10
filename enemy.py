@@ -9,7 +9,7 @@ class Enemy(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.screen = screen
         self.seed = random.choice([0, 1])
-        img = pygame.image.load("assets/bandit.png")
+        img = pygame.image.load("assets/bandit.png").convert_alpha()
         walking_sheet = img if self.seed == 0 else pygame.transform.flip(img, True, False)
         self.image = pygame.transform.scale(walking_sheet, (117, 96))
         self.rect = self.image.get_rect()

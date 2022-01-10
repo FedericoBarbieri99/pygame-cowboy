@@ -36,7 +36,6 @@ def update_entities():
 
 def draw_screen():
     global score
-
     screen.blit(background, [0, 0])
     score_text = font.render(f"Score: {score}", True, (255, 255, 255))
     screen.blit(score_text, score_text.get_rect())
@@ -68,6 +67,7 @@ def event_handler():
 
 def new_game():
     global score
+    player.die()
     score_text = font.render(f"Last score: {score}", True, (255, 255, 255))
     respawn_text = font.render("Press R to Respawn", True, (255, 255, 255))
     respawn_rect = respawn_text.get_rect()
