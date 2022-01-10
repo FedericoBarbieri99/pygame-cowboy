@@ -83,6 +83,7 @@ def new_game():
 
 def reset():
     global score, start_ticks
+    player.__init__(screen)
     enemy_group.empty()
     bullet_group.empty()
     player.alive = True
