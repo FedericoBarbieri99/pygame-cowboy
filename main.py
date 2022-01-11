@@ -103,7 +103,6 @@ def spawn_enemy():
 
 
 def main():
-    pass
     reset()
     while True:
         clock.tick(60)
