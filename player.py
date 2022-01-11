@@ -1,4 +1,5 @@
 import pygame
+import os.path
 
 
 class Player(pygame.sprite.Sprite):
@@ -6,7 +7,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, screen):
         pygame.sprite.Sprite.__init__(self)
         self.screen = screen
-        self.right_facing = pygame.image.load("assets/player.png").convert_alpha()
+        self.right_facing = pygame.image.load(os.path.join("assets", "player.png")).convert_alpha()
         self.left_facing = pygame.transform.flip(self.right_facing, True, False)
         self.image = self.right_facing
         self.rect = self.image.get_rect()

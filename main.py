@@ -1,15 +1,17 @@
-import sys
 from player import *
 from bullet import *
 from enemy import *
 
 pygame.init()
-
-background = pygame.image.load("assets/background.png")
+pygame.mixer.init()
+background = pygame.image.load(os.path.join("assets", "background.png"))
 screen_size = background.get_rect().size
 screen = pygame.display.set_mode(screen_size, vsync=1)
 background = background.convert()
 font = pygame.font.Font(None, 60)
+shot_sound = pygame.mixer.Sound(os.path.join("assets", "Sounds", "shot.wav"))
+kill_sound = pygame.mixer.Sound(os.path.join("assets", "Sounds", "kill2.wav"))
+gameover_sound = pygame.mixer.Sound(os.path.join("assets", "Sounds", "gameover.wav"))
 enemy_group = pygame.sprite.Group()
 bullet_group = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
@@ -26,10 +28,11 @@ def update_entities():
     player_group.update()
     enemy_group.update()
     bullet_group.update()
-    score += len(pygame.sprite.groupcollide(enemy_group, bullet_group, True, True))
+    if len(pygame.sprite.groupcollide(enemy_group, bullet_group, True, True)):
+        score += 1
+        kill_sound.play()
     if pygame.sprite.spritecollideany(player, enemy_group):
-        enemy_group.empty()
-        bullet_group.empty()
+        gameover_sound.play()
         player.alive = False
         player.kill()
 
@@ -55,6 +58,7 @@ def event_handler():
                 player.orientation = 'Right'
             if event.key == pygame.K_SPACE and player.alive:
                 bullet_group.add(Bullet(screen, player))
+                shot_sound.play()
             if event.key == pygame.K_r and not player.alive:
                 main()
 
@@ -86,6 +90,7 @@ def reset():
     player.__init__(screen)
     enemy_group.empty()
     bullet_group.empty()
+    bullet_group.empty()
     player.alive = True
     player_group.add(player)
     score = 0
@@ -93,7 +98,7 @@ def reset():
 
 
 def spawn_enemy():
-    speed = random.uniform(0.1, (pygame.time.get_ticks() - start_ticks) / 1000)
+    speed = random.uniform(1.0, (pygame.time.get_ticks() - start_ticks) / 1000)
     enemy_group.add(Enemy(screen, speed))
 
 
@@ -103,8 +108,8 @@ def main():
     while True:
         clock.tick(60)
         event_handler()
-        update_entities()
         if player.alive:
+            update_entities()
             draw_screen()
         else:
             new_game()
