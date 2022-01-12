@@ -2,6 +2,7 @@ import pygame
 import random
 import os.path
 from spritesheet import SpriteSheet
+from utils import resource_path
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -10,7 +11,7 @@ class Enemy(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.screen = screen
         self.seed = random.choice([0, 1])
-        img = pygame.image.load(os.path.join("assets", "bandit.png")).convert_alpha()
+        img = pygame.image.load(resource_path(os.path.join("assets", "bandit.png"))).convert_alpha()
         walking_sheet = img if self.seed == 0 else pygame.transform.flip(img, True, False)
         self.image = pygame.transform.scale(walking_sheet, (117, 96))
         self.rect = self.image.get_rect()

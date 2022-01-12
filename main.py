@@ -1,17 +1,20 @@
 from player import *
 from bullet import *
 from enemy import *
+import sys
+from utils import resource_path
 
 pygame.init()
 pygame.mixer.init()
-background = pygame.image.load(os.path.join("assets", "background.png"))
+pygame.display.set_caption('Cowboy Shooter')
+background = pygame.image.load(resource_path(os.path.join("assets", "background.png")))
 screen_size = background.get_rect().size
 screen = pygame.display.set_mode(screen_size, vsync=1)
 background = background.convert()
 font = pygame.font.Font(None, 60)
-shot_sound = pygame.mixer.Sound(os.path.join("assets", "Sounds", "shot.wav"))
-kill_sound = pygame.mixer.Sound(os.path.join("assets", "Sounds", "kill2.wav"))
-gameover_sound = pygame.mixer.Sound(os.path.join("assets", "Sounds", "gameover.wav"))
+shot_sound = pygame.mixer.Sound(resource_path(os.path.join("assets", "Sounds", "shot.wav")))
+kill_sound = pygame.mixer.Sound(resource_path(os.path.join("assets", "Sounds", "kill2.wav")))
+gameover_sound = pygame.mixer.Sound(resource_path(os.path.join("assets", "Sounds", "gameover.wav")))
 enemy_group = pygame.sprite.Group()
 bullet_group = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
